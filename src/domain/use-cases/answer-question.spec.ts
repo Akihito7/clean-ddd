@@ -8,7 +8,6 @@ const fakeAnswerRepository : AnswerRepository = {
     return;
   }
 }
-
 test("create an answer", async () => {
     const answerQuestion =  new AnswerQuestionUseCase(fakeAnswerRepository);
 
