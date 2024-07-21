@@ -1,24 +1,33 @@
 import { randomUUID } from "crypto";
+import { Slug } from "./values-objects/slug";
 
 
 interface QuestionProps {
-  title: string;
-  content: string
-  authorId: string;
+     title: string;
+     slug : Slug;
+     content: string;
+     authorId : string;
 }
+
+
 export class Question {
-  private id: string
-  private title: string;
-  private content: string
-  public authorId: string;
+    public id: string
+    public title: string;
+    public slug : Slug;
+    public content: string;
+    public authorId : string;
 
-  constructor(props : QuestionProps, content: string) {
-    this.id = randomUUID();
-    this.title = props.title;
-    this.content = props.content;
-    this.authorId = props.authorId;
-  }
+    constructor(props : QuestionProps, id? : string) {
+        this.id = id ?? randomUUID();
+        this.title = props.title;
+        this.slug = props.slug;
+        this.content = props.content;
+        this.authorId = props.authorId
+    }
 
 }
+
+
+
 
 
