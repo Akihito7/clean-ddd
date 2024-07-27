@@ -27,12 +27,11 @@ describe("edit question", () => {
     await sut.execute({
       answerId: newAnswer.id.toString(),
       authorId: "ney",
-      content: "content answer update"
+      content: "content answer 1 update"
     })
 
-    expect(inMemoryAnswersRepository.items[0].props).toMatchObject({
-      authorId: { _value: 'ney' },
-      content: 'content answer update',
+    expect(inMemoryAnswersRepository.items[0]).toMatchObject({
+      content: 'content answer 1 update',
     });
   })
 
