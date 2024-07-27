@@ -3,9 +3,9 @@ import { Entity } from "@/core/entities/entity";
 import { UniqueEntityId } from "@/core/entities/unique-entity-id";
 import { Optional } from "@/core/types/optional";
 
-interface QuestionProps {
+export interface QuestionProps {
   authorId: UniqueEntityId;
-  bestAnswerId: UniqueEntityId,
+  bestAnswerId?: UniqueEntityId,
   title: string;
   slug: Slug;
   content: string;
@@ -28,11 +28,15 @@ export class Question extends Entity<QuestionProps> {
   }
 
 
+  get id() {
+    return this._id;
+  }
+
   get authorId() {
     return this.props.authorId
   }
 
-  get bestAnswerId() {
+  get bestAnswerId(): UniqueEntityId | undefined {
     return this.props.bestAnswerId;
   }
 

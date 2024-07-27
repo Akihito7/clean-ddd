@@ -13,7 +13,7 @@ interface AnswerProps {
 export class Answer extends Entity<AnswerProps> {
 
   static create(
-    props: Optional<AnswerProps, 'createdAt'>,
+    props: Optional<AnswerProps, 'createdAt' >,
     id?: string
   ) {
     const answer = new Answer({
