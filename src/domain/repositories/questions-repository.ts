@@ -1,5 +1,5 @@
 import { UniqueEntityId } from "@/core/entities/unique-entity-id";
-import { Question } from "../entities/question";
+import { Question, QuestionProps } from "../entities/question";
 import { Slug } from "../entities/values-objects/slug";
 
 export interface QuestionsRepository {
@@ -7,4 +7,5 @@ export interface QuestionsRepository {
     create(question: Question) : Promise<void>
     getBySlug(slug : Slug) : Promise<Question>
     delete(question : Question) : Promise<void>
+    save(question : Question) :  Promise<void>
 }
