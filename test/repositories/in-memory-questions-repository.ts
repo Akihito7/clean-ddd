@@ -1,3 +1,4 @@
+import { PaginationParams } from "@/core/repositories/pagination-params";
 import { Question, QuestionProps } from "@/domain/entities/question";
 import { Slug } from "@/domain/entities/values-objects/slug";
 import { QuestionsRepository } from "@/domain/repositories/questions-repository";
@@ -29,5 +30,19 @@ export class InMemoryQuestionsRepository implements QuestionsRepository {
     const indexQuestion = this.items.findIndex(question => question.id.toString() === question.id.toString());
     this.items[indexQuestion] = question;
   }
+
+  async findManyRecents({ page } : PaginationParams): Promise<Question[]> {
+
+    const itemsPerPage = 10;
+
+    const offset = (page - 1) * itemsPerPage;
+
+    const paginatedQuestions = this.items.slice(offset, offset + itemsPerPage);
+    
+    const sortedQuestions = paginatedQuestions.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+
+    return sortedQuestions;
+}
+
 
 }
