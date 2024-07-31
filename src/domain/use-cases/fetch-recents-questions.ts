@@ -5,7 +5,6 @@ export class FetchRecentesQuestions {
   constructor(private questionsRepository : QuestionsRepository){}
 
   async execute({ page } : PaginationParams){
-    console.log(page)
     return this.questionsRepository.findManyRecents({page})
   }
 }
