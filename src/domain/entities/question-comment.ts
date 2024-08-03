@@ -20,6 +20,10 @@ export class QuestionComment extends Comments<QuestionCommentProps> {
     return question;
   }
 
+  get id(){
+    return this._id
+  }
+
   get questionId() {
     return this.props.questionId;
   }
