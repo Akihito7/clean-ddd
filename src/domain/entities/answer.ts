@@ -1,66 +1,27 @@
-import { Entity } from "@/core/entities/entity";
-import { UniqueEntityId } from "@/core/entities/unique-entity-id";
+import { UniqueEntityId } from "@/core/entities/unique-entity-id"
+import { CommentProps, Comments } from "./comment";
 import { Optional } from "@/core/types/optional";
 
-export interface AnswerProps {
-  authorId: UniqueEntityId;
-  questionId: UniqueEntityId;
-  content: string;
-  createdAt: Date;
-  updatedAt?: Date;
+interface AnswerCommentProps extends CommentProps {
+  questionId: UniqueEntityId
 }
 
-export class Answer extends Entity<AnswerProps> {
+export class AnswerComment extends Comments<AnswerCommentProps> {
 
   static create(
-    props: Optional<AnswerProps, 'createdAt' >,
-    id?: string
+    props: Optional<AnswerCommentProps, 'createdAt'>,
+    id?: UniqueEntityId,
   ) {
-    const answer = new Answer({
+    const answer = new AnswerComment({
       ...props,
-      createdAt: new Date()
-    }, id)
+      createdAt: props.createdAt ? props.createdAt : new Date()
+    })
 
     return answer;
   }
 
-  get id(){
-    return this._id
+  get answer() {
+    return this.props.questionId;
   }
 
-  get authorId() {
-    return this.props.authorId
-  }
-
-  get questionId() {
-    return this.props.questionId
-  }
-
-  get content() {
-    return this.props.content
-  }
-
-  set content(content: string) {
-    this.props.content = content
-    this.touch()
-  }
-
-  get excerpt() {
-    return this.props.content
-      .substring(0, 120)
-      .trimEnd()
-      .concat("...")
-  }
-
-  get createdAt() {
-    return this.props.createdAt
-  }
-
-  get updatedAt() {
-    return this.props.updatedAt
-  }
-
-  private touch() {
-    return this.props.updatedAt = new Date()
-  }
 }
