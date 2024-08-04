@@ -1,5 +1,5 @@
 import { QuestionComment } from "@/domain/entities/question-comment";
-import { QuestionCommentsRepository } from "@/domain/repositories/question-comments-repository";
+import { findManyByQuestionId, QuestionCommentsRepository } from "@/domain/repositories/question-comments-repository";
 
 export class InMemoryQuestionCommentsRepository implements QuestionCommentsRepository {
 
@@ -12,6 +12,21 @@ export class InMemoryQuestionCommentsRepository implements QuestionCommentsRepos
   async findById(commentId: string): Promise<QuestionComment> {
     const comment = this.items.filter(comment => comment.id.toString() === commentId)[0]
     return comment;
+  }
+
+  async findManyByQuestionId({ questionId, params : { page } }: findManyByQuestionId): Promise<QuestionComment[]> {
+
+    const itemsPerPage = 10;
+
+    const offset = (page - 1) * itemsPerPage;
+
+    const filteredComments = this.items.filter(item => item.questionId.toString() === questionId)
+
+    const paginatedComments = filteredComments.slice(offset, offset + itemsPerPage);
+
+    const sortedQuestions = paginatedComments.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+
+    return sortedQuestions;
   }
 
   async delete(comment: QuestionComment): Promise<void> {

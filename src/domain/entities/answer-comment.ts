@@ -2,7 +2,7 @@ import { UniqueEntityId } from "@/core/entities/unique-entity-id"
 import { CommentProps, Comments } from "./comment";
 import { Optional } from "@/core/types/optional";
 
-interface AnswerCommentProps extends CommentProps {
+export interface AnswerCommentProps extends CommentProps {
   answerId: UniqueEntityId
 }
 
@@ -24,7 +24,7 @@ export class AnswerComment extends Comments<AnswerCommentProps> {
     return this._id;
   }
 
-  get answer() {
+  get answerId() {
     return this.props.answerId;
   }
 
