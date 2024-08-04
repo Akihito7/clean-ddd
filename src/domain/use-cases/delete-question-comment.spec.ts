@@ -1,11 +1,9 @@
 import { InMemoryQuestionsRepository } from "test/repositories/in-memory-questions-repository"
 import { DeleteQuestionCommentUseCase } from "./delete-question-comment";
-import { InMemoryAnswerCommentsRepository } from "test/repositories/in-memory-answer-comments-repository";
 import { InMemoryQuestionCommentsRepository } from "test/repositories/in-memory-question-comments-respository";
 import { makeQuestion } from "test/factories/make-question";
 import { QuestionComment } from "../entities/question-comment";
 import { UniqueEntityId } from "@/core/entities/unique-entity-id";
-import exp from "constants";
 
 let inMemoryQuestionCommentsRepository: InMemoryQuestionCommentsRepository;
 let inMemoryQuestionsRepository: InMemoryQuestionsRepository;
@@ -19,6 +17,7 @@ describe("Delete question comment", () => {
   })
 
   it("Should be able delete comment of question", async () => {
+    
     const question = makeQuestion();
 
     await inMemoryQuestionsRepository.create(question);
