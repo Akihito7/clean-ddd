@@ -1,4 +1,7 @@
+import { Either, left, Left, right, Right } from "@/core/either";
 import { AnswerCommentsRepository } from "../repositories/answer-comments-repository";
+import { NotAllowedError } from "./errors/not-allowed-error";
+import { ResourceNotFound } from "./errors/resource-not-found";
 
 interface DeleteAnswerCommentProps {
   authorId: string;
@@ -11,14 +14,20 @@ export class DeleteAnswerCommentUseCase {
   async execute({
     authorId,
     commentId
-  }: DeleteAnswerCommentProps) {
+  }: DeleteAnswerCommentProps): Promise<Either<NotAllowedError | ResourceNotFound, {}>> {
 
     const comment = await this.answerCommentRepository.findById(commentId);
+    
+    if (!comment) {
+      return left(new ResourceNotFound())
+    };
 
-    if(!comment) throw new Error("Comment does not found");
-
-    if(authorId != comment.authorId.toString()) throw new Error("Not authorized");
+    if (authorId != comment.authorId.toString()) {
+      return left(new NotAllowedError())
+    }
 
     await this.answerCommentRepository.delete(comment);
+
+    return right({})
   }
 }
