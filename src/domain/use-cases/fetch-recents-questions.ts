@@ -5,11 +5,11 @@ import { ResourceNotFound } from "./errors/resource-not-found";
 import { NotAllowedError } from "./errors/not-allowed-error";
 import { Question } from "../entities/question";
 
-type FetchQuestionCommentsUseCaseResponse =  Either<ResourceNotFound | NotAllowedError , Question[]>
+type FetchRecentesQuestionsResponse =  Either<ResourceNotFound | NotAllowedError , Question[]>
 export class FetchRecentesQuestions {
   constructor(private questionsRepository : QuestionsRepository){}
 
-  async execute({ page } : PaginationParams) : Promise<FetchQuestionCommentsUseCaseResponse>{
+  async execute({ page } : PaginationParams) : Promise<FetchRecentesQuestionsResponse>{
     const questions = await this.questionsRepository.findManyRecents({page})
     return right(questions)
   }

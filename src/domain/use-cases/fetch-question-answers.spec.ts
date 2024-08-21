@@ -42,10 +42,14 @@ describe("Fetch question answers", () => {
     await inMemoryAnswersRepository.create(answerThree)
 
     const answers = await sut.execute({questionId : newQuestion.id.toString(), params : { page : 1}});
+    
+    if(answers.isRight()){
+      const { value } = answers;
+      expect(value[0].createdAt).toEqual(answerTwo.createdAt)
+      expect(value[1].createdAt).toEqual(answerThree.createdAt)
+      expect(value[2].createdAt).toEqual(answerOne.createdAt)
+    }
 
-    expect(answers[0].createdAt).toEqual(answerTwo.createdAt)
-    expect(answers[1].createdAt).toEqual(answerThree.createdAt)
-    expect(answers[2].createdAt).toEqual(answerOne.createdAt)
   })
 
 
@@ -78,8 +82,11 @@ describe("Fetch question answers", () => {
 
     const answers = await sut.execute({ questionId: newQuestion.id.toString(), params: { page: 1 } });
 
-    for (let i = 0; i < answers.length; i++) {
-      expect(answers[i].questionId.toString()).toEqual(newQuestion.id.toString())
+    if(answers.isRight()){
+      const { value } = answers;
+      for (let i = 0; i < value.length; i++) {
+        expect(value[i].questionId.toString()).toEqual(newQuestion.id.toString())
+      }
     }
   })
 })

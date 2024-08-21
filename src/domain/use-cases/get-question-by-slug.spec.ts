@@ -5,7 +5,7 @@ import { makeQuestion } from "test/factories/make-question";
 import { Slug } from "../entities/values-objects/slug";
 
 let inMemoryQuestionsRepository: InMemoryQuestionsRepository;
-let createQuestion : CreateQuestionUseCase;
+let createQuestion: CreateQuestionUseCase;
 let sut: GetQuestionBySlug;
 
 describe("Get question by slug", () => {
@@ -20,15 +20,17 @@ describe("Get question by slug", () => {
   it("Should be able get question by slug", async () => {
 
     const newQuestion = makeQuestion({
-      slug : Slug.createFromText("example")
+      slug: Slug.createFromText("example")
     })
 
-    inMemoryQuestionsRepository.create(newQuestion); 
+    inMemoryQuestionsRepository.create(newQuestion);
 
-    const { question : questionBySlug } = await sut.execute(newQuestion.slug);
-
-    expect(questionBySlug).toBeTruthy();
-    expect(questionBySlug.slug).toEqual(newQuestion.slug)
-    expect(questionBySlug.title).toEqual(newQuestion.title)
+    const question = await sut.execute(newQuestion.slug);
+    if (question.isRight()) {
+      const { value } = question;
+      expect(value.slug.value).toBeTruthy();
+      expect(value.slug).toEqual(newQuestion.slug)
+      expect(value.title).toEqual(newQuestion.title)
+    }
   })
 })

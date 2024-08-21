@@ -9,9 +9,7 @@ interface CreateQuestionProps {
   content: string,
 }
 
-type CreateQuestionUseCaseResponse = Either<null, {
-  question : Question
-}>
+type CreateQuestionUseCaseResponse = Either<null, Question>
 
 export class CreateQuestionUseCase {
 
@@ -30,6 +28,6 @@ export class CreateQuestionUseCase {
 
     await this.questionsRepository.create(question);
     
-    return right({question})
+    return right(question)
   }
 }

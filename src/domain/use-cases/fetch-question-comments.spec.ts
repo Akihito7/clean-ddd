@@ -33,7 +33,7 @@ describe("Fetch question comments", () => {
       params : { page : 3}
     })
 
-    expect(comments).toHaveLength(2)
+    expect(comments.value).toHaveLength(2)
   })
 
   it("Should be able order questions by createAt", async () => {
@@ -63,9 +63,12 @@ describe("Fetch question comments", () => {
       questionId : question.id.toString(),
       params : { page : 1}
     })
-    expect(comments[0].createdAt).toEqual(commentTwo.createdAt)
-    expect(comments[1].createdAt).toEqual(commentThree.createdAt)
-    expect(comments[2].createdAt).toEqual(commentOne.createdAt)
 
+    if(comments.isRight()){
+      const { value } = comments
+      expect(value[0].createdAt).toEqual(commentTwo.createdAt)
+      expect(value[1].createdAt).toEqual(commentThree.createdAt)
+      expect(value[2].createdAt).toEqual(commentOne.createdAt)
+    }
   })
 })

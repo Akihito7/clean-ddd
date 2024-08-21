@@ -3,6 +3,7 @@ import { makeQuestion } from "test/factories/make-question"
 import { InMemoryAnswersRepository } from "test/repositories/in-memory-answers-repository";
 import { EditAnswerUseCase } from "./edit-answer";
 import { makeAnswer } from "test/factories/make-answer";
+import { NotAllowedError } from "./errors/not-allowed-error";
 
 
 let inMemoryAnswersRepository: InMemoryAnswersRepository;
@@ -43,13 +44,14 @@ describe("edit question", () => {
 
     await inMemoryAnswersRepository.create(newAnswer);
 
-    expect(() => {
-      return sut.execute({
-        answerId : newAnswer.id.toString(),
-        authorId: "a",
-        content: "content answer"
-      })
-    }).rejects.toBeInstanceOf(Error)
+    const answer = await sut.execute({
+      answerId: newAnswer.id.toString(),
+      authorId: "a",
+      content: "content answer"
+    });
+
+    expect(answer.isLeft()).toBeTruthy();
+    expect(answer.value).instanceOf(NotAllowedError)
   })
 
 })

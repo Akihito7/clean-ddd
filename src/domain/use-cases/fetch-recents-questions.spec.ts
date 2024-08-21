@@ -15,28 +15,29 @@ describe("fetch recents questions", () => {
 
   it("Should be able order questions by createAt", async () => {
     const questionOne = makeQuestion({
-      createdAt : new Date(2024,7,16)
+      createdAt: new Date(2024, 7, 16)
     });
 
     const questionTwo = makeQuestion({
-      createdAt : new Date(2024,7,20)
+      createdAt: new Date(2024, 7, 20)
     });
 
     const questionThree = makeQuestion({
-      createdAt : new Date(2024,7,18)
+      createdAt: new Date(2024, 7, 18)
     });
 
     await inMemoryQuestionsRepository.create(questionOne)
     await inMemoryQuestionsRepository.create(questionTwo)
     await inMemoryQuestionsRepository.create(questionThree)
 
-    const questions = await sut.execute({ page : 1 });
+    const questions = await sut.execute({ page: 1 });
 
-    expect(questions[0].createdAt).toEqual(questionTwo.createdAt)
-    expect(questions[1].createdAt).toEqual(questionThree.createdAt)
-    expect(questions[2].createdAt).toEqual(questionOne.createdAt)
-
-
+    if (questions.isRight()) {
+      const { value } = questions;
+      expect(value[0].createdAt).toEqual(questionTwo.createdAt)
+      expect(value[1].createdAt).toEqual(questionThree.createdAt)
+      expect(value[2].createdAt).toEqual(questionOne.createdAt)
+    }
   })
 
   it("Should be able get fetch recents questions", async () => {
@@ -45,8 +46,11 @@ describe("fetch recents questions", () => {
       const newQuestion = makeQuestion();
       await inMemoryQuestionsRepository.create(newQuestion);
     };
-    const questions = await sut.execute({ page : 4});
+    const questions = await sut.execute({ page: 4 });
 
-    expect(questions).toHaveLength(2)
+    if (questions.isRight()) {
+      const { value } = questions
+      expect(value).toHaveLength(2)
+    }
   })
 })

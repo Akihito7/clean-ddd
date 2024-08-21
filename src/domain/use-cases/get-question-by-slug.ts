@@ -5,12 +5,12 @@ import { NotAllowedError } from "./errors/not-allowed-error";
 import { ResourceNotFound } from "./errors/resource-not-found";
 import { Question } from "../entities/question";
 
-type FetchQuestionCommentsUseCaseResponse =  Either<ResourceNotFound | NotAllowedError , {question : Question}>
+type GetQuestionBySlugResponse =  Either<ResourceNotFound | NotAllowedError ,  Question>
 export class GetQuestionBySlug {
   constructor(private questionsRepository: QuestionsRepository) { }
 
-  async execute(slug : Slug) : Promise<FetchQuestionCommentsUseCaseResponse>{
+  async execute(slug : Slug) : Promise<GetQuestionBySlugResponse>{
     const question = await this.questionsRepository.getBySlug(slug);
-    return right({question})
+    return right(question)
   } 
 }
