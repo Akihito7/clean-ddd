@@ -1,6 +1,7 @@
 import { UniqueEntityId } from "@/core/entities/unique-entity-id";
 import { Question } from "../entities/question";
 import { QuestionsRepository } from "../repositories/questions-repository";
+import { Either, right } from "@/core/either";
 
 interface CreateQuestionProps {
   authorId: string,
@@ -8,14 +9,18 @@ interface CreateQuestionProps {
   content: string,
 }
 
+type CreateQuestionUseCaseResponse = Either<null, {
+  question : Question
+}>
+
 export class CreateQuestionUseCase {
 
-  constructor(private questionsRepository: QuestionsRepository) { }
+  constructor(private questionsRepository: QuestionsRepository){ }
   async execute({
     authorId,
     title,
     content,
-  }: CreateQuestionProps) {
+  }: CreateQuestionProps) : Promise<CreateQuestionUseCaseResponse> {
 
     const question = Question.create({
       authorId: new UniqueEntityId(authorId),
@@ -25,8 +30,6 @@ export class CreateQuestionUseCase {
 
     await this.questionsRepository.create(question);
     
-    return {
-      question
-    }
+    return right({question})
   }
 }
