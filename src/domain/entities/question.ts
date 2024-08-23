@@ -1,14 +1,15 @@
 import { AggregateRoot } from "@/core/entities/aggregate-root";
 import { Slug } from "./values-objects/slug";
-import { Entity } from "@/core/entities/entity";
 import { UniqueEntityId } from "@/core/entities/unique-entity-id";
 import { Optional } from "@/core/types/optional";
+import { QuestionAttachment } from "./question-attachment";
 
 export interface QuestionProps {
   authorId: UniqueEntityId;
   bestAnswerId?: UniqueEntityId,
   title: string;
   slug: Slug;
+  attchaments : QuestionAttachment[]
   content: string;
   createdAt: Date;
   updatedAt?: Date;
@@ -17,12 +18,13 @@ export interface QuestionProps {
 export class Question extends AggregateRoot<QuestionProps> {
   
   static create(
-    props: Optional<QuestionProps, 'createdAt' | 'slug'>,
+    props: Optional<QuestionProps, 'createdAt' | 'slug' | "attchaments">,
     id?: string
   ) {
     const question = new Question({
       ...props,
       createdAt: props.createdAt ? props.createdAt :  new Date(),
+      attchaments : props.attchaments ? props.attchaments : [],
       slug: props.slug ?? Slug.createFromText(props.title)
     })
     return question;
@@ -58,6 +60,14 @@ export class Question extends AggregateRoot<QuestionProps> {
 
   get slug() {
     return this.props.slug;
+  }
+
+  get attchaments(){
+    return this.props.attchaments;
+  }
+
+  set attchaments(attachments : QuestionAttachment[]){
+    this.props.attchaments = attachments
   }
 
   get content() {
