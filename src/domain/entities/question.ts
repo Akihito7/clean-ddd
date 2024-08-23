@@ -1,3 +1,4 @@
+import { AggregateRoot } from "@/core/entities/aggregate-root";
 import { Slug } from "./values-objects/slug";
 import { Entity } from "@/core/entities/entity";
 import { UniqueEntityId } from "@/core/entities/unique-entity-id";
@@ -13,8 +14,8 @@ export interface QuestionProps {
   updatedAt?: Date;
 }
 
-export class Question extends Entity<QuestionProps> {
-
+export class Question extends AggregateRoot<QuestionProps> {
+  
   static create(
     props: Optional<QuestionProps, 'createdAt' | 'slug'>,
     id?: string
