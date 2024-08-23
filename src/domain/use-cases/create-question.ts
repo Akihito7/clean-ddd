@@ -3,6 +3,7 @@ import { Question } from "../entities/question";
 import { QuestionsRepository } from "../repositories/questions-repository";
 import { Either, right } from "@/core/either";
 import { QuestionAttachment } from "../entities/question-attachment";
+import { QuestionAttachmentsList } from "../entities/question-attachment-list";
 
 interface CreateQuestionProps {
   authorId: string,
@@ -35,7 +36,7 @@ export class CreateQuestionUseCase {
       })
     ))
 
-    question.attchaments = questionsAttachments ?? [];
+    question.attchaments = new QuestionAttachmentsList(questionsAttachments) ?? [];
 
     await this.questionsRepository.create(question);
     

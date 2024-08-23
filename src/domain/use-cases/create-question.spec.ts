@@ -19,8 +19,8 @@ describe("Create question", () => {
 
     expect(question.value?.title).toEqual("How to play of riven");
     expect(inMemoryQuestionsRepository.items[0]).toBeTruthy();
-    expect(question.value?.attchaments).toHaveLength(2);
-    expect(question.value?.attchaments).toEqual([
+    expect(question.value?.attchaments.currentItems).toHaveLength(2);
+    expect(question.value?.attchaments.currentItems).toEqual([
       expect.objectContaining({ attachmentId: "1" }),
       expect.objectContaining({ attachmentId: "2" })
     ])
