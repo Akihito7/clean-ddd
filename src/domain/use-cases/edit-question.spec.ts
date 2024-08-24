@@ -43,7 +43,6 @@ describe("edit question", () => {
       }))
     }
     newQuestion.attchaments.update(updatedAttachments);
-    console.log("later", newQuestion.attchaments.currentItems)
     await inMemoryQuestionsRepository.create(newQuestion);
 
     expect(newQuestion.attchaments.currentItems).toEqual([
