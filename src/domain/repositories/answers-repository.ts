@@ -1,7 +1,5 @@
 import { PaginationParams } from "@/core/repositories/pagination-params";
 import { Answer } from "../entities/answer";
-import { UniqueEntityId } from "@/core/entities/unique-entity-id";
-
 export interface FindManyByQuestionIdParams {
   questionId : string,
   params : PaginationParams

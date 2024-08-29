@@ -14,7 +14,8 @@ describe("Create question", () => {
     const { answer } = await sut.execute({
       instructorId: '1',
       questionId: '1',
-      content: "just to do basic man"
+      content: "just to do basic man",
+      attachementsIds : ["1","2"]
     })
 
     expect(answer.content).toEqual("just to do basic man")

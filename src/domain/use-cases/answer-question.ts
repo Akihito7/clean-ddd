@@ -1,24 +1,42 @@
 import { UniqueEntityId } from "@/core/entities/unique-entity-id";
 import { Answer } from "../entities/answer";
 import { AnswersRepository } from "../repositories/answers-repository";
+import { AnswerAttachment } from "../entities/answer-attachment";
+import { AnswerAttachmentList } from "../entities/answer-attchament-list";
 
 interface AnswerQuestionUseCaseParams {
   instructorId: string;
   questionId: string;
   content: string;
+  attachementsIds? : string[]
 }
 
 export class AnswerQuestionUseCase {
-  constructor(private answersRepository: AnswersRepository) { }
+  constructor(
+    private answersRepository: AnswersRepository
+  ) { }
 
-  async execute({ instructorId, questionId, content }: AnswerQuestionUseCaseParams) {
+  async execute({ instructorId, questionId, content, attachementsIds }: AnswerQuestionUseCaseParams) {
     const answer = Answer.create({
       content,
       authorId: new UniqueEntityId(instructorId),
       questionId: new UniqueEntityId(questionId),
     })
+
+    const answerAttachments = attachementsIds?.map(attachmentId => (
+      new AnswerAttachment({
+        answerId : answer.id.toString(),
+        attachmentId : attachmentId
+      })
+    ))
+
+    const attachementsListWatched = new AnswerAttachmentList(answerAttachments)
+
+    answer.attachments = attachementsListWatched ?? []
+
     await this.answersRepository.create(answer)
-    return {answer}
+
+    return { answer }
   }
 }
 
