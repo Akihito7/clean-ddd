@@ -1,9 +1,12 @@
 import { PaginationParams } from "@/core/repositories/pagination-params";
 import { Question, QuestionProps } from "@/domain/entities/question";
 import { Slug } from "@/domain/entities/values-objects/slug";
+import { QuestionAttachmentsRepository } from "@/domain/repositories/question-attachments-repository";
 import { QuestionsRepository } from "@/domain/repositories/questions-repository";
+import { InMemoryQuestionAttachmentsRepository } from "./in-memory-question-attachments-repository";
 
 export class InMemoryQuestionsRepository implements QuestionsRepository {
+
   public items: Question[] = [];
 
   async findById(id: string) {
